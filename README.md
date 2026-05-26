@@ -1,8 +1,6 @@
 # 🐝 Laboratório com Containerlab
 
-Um laboratório de Observação de Protocolo de Rede
-
-> Laboratório prático de **filtragem de pacotes em velocidade de linha** usando ** ** em um ambiente de rede virtualizado com **Containerlab**.
+> Laboratório prático de **Observação de Protocolo** usando um ambiente de rede virtualizado com **Containerlab**.
 
 [![Containerlab](https://img.shields.io/badge/Containerlab-v0.50+-blue?logo=linux)](https://containerlab.dev)
 [![Docker](https://img.shields.io/badge/Docker-required-blue?logo=docker)](https://www.docker.com)
@@ -12,15 +10,12 @@ Um laboratório de Observação de Protocolo de Rede
 
 ## 📖 Visão Geral
 
-Este laboratório demonstra um recurso muito poderoso do kernel Linux: o ** **. Aqui é anexado um pequeno programa  na interface de rede, que descarta pacotes **antes mesmo que eles cheguem à pilha de rede**, tornando a filtragem praticamente "gratuita" em termos de CPU.
+Este laboratório utiliza o Containerlab como orquestrador de container para observação de protocolos e testes de segurança de redes.
 
 **O que este laboratório demonstra:**
-- Compilação de um programa  em C para bytecode  usando Docker como ambiente de build.
 - Deploy de uma rede virtual com 2 nós usando Containerlab.
-- Carregamento de um programa  em uma interface de rede com ` `.
-- Bloqueio de tráfego ICMP (ping) em velocidade de linha.
-- Leitura de contadores de pacotes descartados a partir de um ** ** em tempo real.
-- O laboratório disponibiliza um script (ativation-test.md) para testar o deploy e comparar o desempenho do  com o iptables.
+- Ataque DDos com hping3.
+- Leitura de desempenho com iperf.
 ---
 
 ## Topologia
@@ -33,17 +28,17 @@ Este laboratório demonstra um recurso muito poderoso do kernel Linux: o ** **. 
 │  │  node-a  ├─────────────┤  node-b  │  │
 │  │10.0.0.1  │             │10.0.0.2  │  │
 │  └──────────┘             └──────────┘  │
-│    (emissor)            ( )    │
+│    (emissor)                            │
 └─────────────────────────────────────────┘
 ```
 - node-a: Máquina Linux usando a imagem nicolaka/netshoot (distro focada em ferramentas de rede).
-- node-b: Máquina Linux nicolaka/netshoot com um bind, montando o arquivo  do host diretamente para a raiz do container (/ _drop.o).
+- node-b: Máquina Linux usando a imagem nicolaka/netshoot (distro focada em ferramentas de rede).
 
 
 | Nó     | Endereço IP  | Função                                      |
 |--------|-------------|---------------------------------------------|
 | node-a | `10.0.0.1`  | Emissor de pacotes (origem do ping)         |
-| node-b | `10.0.0.2`  | Filtro  — descarta pacotes ICMP          |
+| node-b | `10.0.0.2`  | Emissor de pacotes (origem do ping)         |
 
 ---
 
@@ -86,13 +81,47 @@ containerlab version
 Clone o repositório e acesse o diretório do laboratório:
 
 ```bash
-git clone https://github.com/DANIELVENTORIM/ebpf-lab.git
-cd ebpf-lab
+git clone https://github.com/SamAS195/labredes.git
+cd  -lab
 ```
 
-> 📁 Arquivos principais:
-> - `lab-ebpf.clab.yml` — Definição da topologia Containerlab
-> - `xdp_drop.c` — Código-fonte eBPF/XDP
-> - `compile.sh` — Script de compilação via Docker
+## 🐝 Passo 2 — Deploy da Topologia
+
+```bash
+sudo containerlab deploy -t lab.clab.yml --reconfigure
+```
+
+Isso irá:
+- Criar dois containers Linux (`node-a` e `node-b`) com a imagem `nicolaka/netshoot`.
+- Configurar os IPs nas interfaces `eth1` de cada nó.
+- Criar um link virtual direto entre as interfaces `eth1` dos dois nós.
+
+Verifique se o lab está rodando:
+
+```bash
+docker ps --filter "label=containerlab=lab"
+```
 
 ---
+
+## 🐝 Passo 3 — Verificar Conectividade Inicial
+
+
+```bash
+docker exec clab-lab-node-a ping -c 3 10.0.0.2
+```
+
+**Resultado esperado:** `0% packet loss`  
+
+---
+
+
+
+
+## 📚 Referências
+
+- [Documentação Oficial do eBPF](https://ebpf.io/what-is-ebpf/)
+- [Documentação do Containerlab](https://containerlab.dev/quickstart/)
+- [Tutorial XDP (kernel.org)](https://github.com/xdp-project/xdp-tutorial)
+- [libbpf GitHub](https://github.com/libbpf/libbpf)
+- [nicolaka/netshoot — Container de diagnóstico de rede](https://github.com/nicolaka/netshoot)
