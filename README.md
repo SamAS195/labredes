@@ -88,7 +88,7 @@ cd  -lab
 ## 🐝 Passo 2 — Deploy da Topologia
 
 ```bash
-sudo containerlab deploy -t lab.clab.yml --reconfigure
+sudo containerlab deploy -t labredes.clab.yml --reconfigure
 ```
 
 Isso irá:
@@ -96,10 +96,10 @@ Isso irá:
 - Configurar os IPs nas interfaces `eth1` de cada nó.
 - Criar um link virtual direto entre as interfaces `eth1` dos dois nós.
 
-Verifique se o lab está rodando:
+Verifique se o labredes está rodando:
 
 ```bash
-docker ps --filter "label=containerlab=lab"
+docker ps --filter "label=containerlab=labredes"
 ```
 
 ---
