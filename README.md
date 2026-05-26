@@ -82,7 +82,7 @@ Clone o repositório e acesse o diretório do laboratório:
 
 ```bash
 git clone https://github.com/SamAS195/labredes.git
-cd  -lab
+cd labredes
 ```
 
 ## 🐝 Passo 2 — Deploy da Topologia
