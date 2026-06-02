@@ -1,4 +1,4 @@
-name: ebpf-lab
+name: lab
 
 topology:
   nodes:
