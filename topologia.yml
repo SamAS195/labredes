@@ -1,4 +1,4 @@
-name: lab
+name: ebpf-lab
 
 topology:
   nodes:
@@ -10,7 +10,7 @@ topology:
 
     node-b:
       kind: linux
-      image: nicolaka/netshoot:lates
+      image: nicolaka/netshoot:latest
       exec:
         - ip addr add 10.0.0.2/24 dev eth1
 
