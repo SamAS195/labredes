@@ -88,7 +88,7 @@ cd labredes
 ## 🐝 Passo 2 — Deploy da Topologia
 
 ```bash
-sudo containerlab deploy -t labredes.clab.yml --reconfigure
+sudo containerlab deploy -t topologia.yml --reconfigure
 ```
 
 Isso irá:
