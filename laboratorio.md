@@ -15,13 +15,13 @@ Passo 1.2: Acessar os Nós do Laboratório
    - Para acessar o node-a:
    
    ```
-   docker exec -it clab-ebpf-lab-node-a bash
+   docker exec -it clab-lab-node-a bash
    ```
    
    - Para acessar o node-b:
    
    ```
-   docker exec -it clab-ebpf-lab-node-b bash
+   docker exec -it clab-lab-node-b bash
    ```
 
 Passo 1.3: Verificar Interfaces e Endereços IP
